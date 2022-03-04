@@ -1,0 +1,3 @@
+/home/sofia/Documents/linuxtyper/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/sofia/Documents/linuxtyper/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/sofia/Documents/linuxtyper/cmake-build-debug/CMakeFiles/linuxtyper.dir
