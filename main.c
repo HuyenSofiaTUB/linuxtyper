@@ -6,6 +6,7 @@
 #include <xdo.h>
 #include <unistd.h>
 #include <time.h>
+#include <string.h>
 
 // Objects
 GtkWidget *uiwindow; // Window
@@ -26,20 +27,24 @@ int start_toggle = 0;
 char* state[2] = {"Start", "Pause"};
 xdo_t * x;
 Window *window;
-
+FILE * fptr;
 
 void func() {
     clock_gettime(CLOCK_REALTIME, current_time);
     while((current_time->tv_sec > (saved_time->tv_sec + intervall)) && (start_toggle != 0)) {
-        printf("tim in yall\n");
+        if(xdo_get_pid_window(x, *window) == 0) {
+            xdo_get_focused_window(x, window);
+        }
         xdo_activate_window(x, *window);
         xdo_send_keysequence_window(x, *window, "Return", 2);
 
         nanosleep(req,rem);
 
-        int r = rand() % 5;
-
-        xdo_enter_text_window(x, *window, gtk_entry_get_text(text[r]), 0);
+        char* str = gtk_entry_get_text(text[rand() % 5]);
+        if(str[0] == '\0') {
+            str = "o/";
+        }
+        xdo_enter_text_window(x, *window, str, 0);
         xdo_send_keysequence_window(x, *window, "Return", 2);
 
         if (toggle != 0) {
@@ -56,14 +61,26 @@ void func() {
 // Main function
 int main(int argc, char *argv[])
 {
+    GError *err = NULL;
     GtkBuilder *builder; // GTK Builder variable
     gtk_init(&argc, &argv); // Start GTK
 
     builder = gtk_builder_new(); // Create GTK UI Builder
-    gtk_builder_add_from_file(builder, "gui.glade", NULL); // Load our UI file
-
+    if(0 == gtk_builder_add_from_file (builder, "gui.glade", &err))
+    {
+        /* Print out the error. You can use GLib's message logging */
+        fprintf(stderr, "Error adding build from file. Error: %s\n", err->message);
+        /* Your error handling code goes here */
+    }
+    
     // Assign the Variables
     uiwindow = GTK_WIDGET(gtk_builder_get_object(builder, "uiwindow")); // Load our window named MyWindow
+    if (NULL == uiwindow)
+    {
+        /* Print out the error. You can use GLib's message logging  */
+        fprintf(stderr, "Unable to file object with id \"uiwindow\" \n");
+        /* Your error handling code goes here */
+    }
 
     text[0] = GTK_ENTRY(gtk_builder_get_object(builder, "uitext1"));
     text[1] = GTK_ENTRY(gtk_builder_get_object(builder, "uitext2"));
@@ -80,6 +97,18 @@ int main(int argc, char *argv[])
     g_object_unref(builder);
 
     // Setup
+    char *line = NULL;
+    size_t len = 0;
+    int i = 0;
+
+    fptr = fopen("data.txt", "a+");
+    while ((getline(&line, &len, fptr)) != -1) {
+        line[strlen(line)-1] = '\0';
+        gtk_entry_set_text(text[i], line);
+        i++;
+    }
+    free(line);
+
     x = xdo_new(":0.0");
     window = (Window*)malloc(sizeof(Window));
 
@@ -103,18 +132,30 @@ int main(int argc, char *argv[])
 void exit_app()
 {
     printf("Exit app \n"); // Not neccesary
+    fptr = fopen("data.txt", "w");
+    for(int i = 0; i < 5; i++) {
+        fputs(gtk_entry_get_text(text[i]), fptr);
+        fputs("\n", fptr);
+    }
+
     gtk_main_quit(); // Command to quit a GTK program
 }
 
 // Function when our button is pressed
 void start_clicked()
 {
-    intervall = atoi(gtk_entry_get_text(uitime));
     start_toggle = !start_toggle;
     gtk_button_set_label(uistartbutton, state[start_toggle]);
-    clock_gettime(CLOCK_REALTIME, saved_time);
     printf("tstart %d\n", start_toggle);
-    gdk_threads_add_idle((GSourceFunc)func, NULL);
+    gtk_widget_set_sensitive(GTK_WIDGET(uitime), TRUE);
+
+    if (start_toggle == 1) {
+        gtk_widget_set_sensitive(GTK_WIDGET(uitime), FALSE);
+        intervall = atoi(gtk_entry_get_text(uitime)) + 10 * !(atoi(gtk_entry_get_text(uitime)));
+        clock_gettime(CLOCK_REALTIME, saved_time);
+        gdk_threads_add_idle((GSourceFunc)func, NULL);
+    }
+
 }
 
 void minimize_toggled()
@@ -128,7 +169,7 @@ void select_clicked()
 {
     char str[10];
     printf("pleek choose \n");
-    for(int i = 5; i > 0; i--) {
+    for(int i = 3; i > 0; i--) {
         sleep(1);
         xdo_get_focused_window(x, window);
         printf("%d \n", i);
