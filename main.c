@@ -1,4 +1,3 @@
-
 // Libraries
 #include <gtk-3.0/gtk/gtk.h> // GTK Library
 #include <stdio.h>

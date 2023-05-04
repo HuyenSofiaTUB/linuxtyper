@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Linuxtyper
+Path=~/.local/share/applications/linuxtyper
+Exec=linuxtyper
+Icon=icon.png
+Terminal=false
