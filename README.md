@@ -1,6 +1,6 @@
 # LinuxTyper
 
-A superior Auto-Typer for Linux.
+The superior Auto-Typer for Linux.
 
 ## Features
 
@@ -17,13 +17,13 @@ Make sure you are using X11, not Wayland. Logout from your session. On the GNOME
 
 For compilation, you will need:
 
-- git
 - CMake
+- Make
 - `gtk-3.0` and `xdotool` development headers
 
 On Debian based distributions (Ubuntu, Zorin...) run:
 ```
-sudo apt-get install git libxdo-dev libgtk-3-dev
+sudo apt-get install libxdo-dev libgtk-3-dev
 ```
 
 ## Installation
