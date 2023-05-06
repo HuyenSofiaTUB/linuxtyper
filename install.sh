@@ -10,7 +10,7 @@ make
 
 # add to applications
 mkdir "$applications"/linuxtyper
-mv linuxtyper.desktop "$applications"
+mv ../linuxtyper.desktop "$applications"
 mv linuxtyper "$applications"/linuxtyper
 mv ../gui.glade "$applications"/linuxtyper
-mv icon.png "$applications"/linuxtyper
+mv ../icon.png "$applications"/linuxtyper
