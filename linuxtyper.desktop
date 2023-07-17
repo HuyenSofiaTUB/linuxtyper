@@ -2,7 +2,7 @@
 Version=1.0
 Type=Application
 Name=Linuxtyper
-Path=~/.local/share/applications/linuxtyper
-Exec=linuxtyper
-Icon=icon.png
+Path=/opt/linuxtyper
+Exec=/opt/linuxtyper/linuxtyper
+Icon=/usr/share/icons/linuxtyper/icon.png
 Terminal=false
