@@ -7,8 +7,8 @@ cmake ..
 make
 
 # add to applications
-mkdir /opt/linuxtyper
-mkdir /usr/share/icons/linuxtyper
-mv ../linuxtyper.desktop /usr/share/applications
-mv linuxtyper /opt/linuxtyper
-mv ../icon.png /usr/share/icons/linuxtyper
+sudo mkdir /opt/linuxtyper
+sudo mkdir /usr/share/icons/linuxtyper
+sudo mv ../linuxtyper.desktop /usr/share/applications
+sudo mv linuxtyper /opt/linuxtyper
+sudo mv ../icon.png /usr/share/icons/linuxtyper
