@@ -25,7 +25,7 @@ For compilation, you will need:
 
 On Debian based distributions (Ubuntu, Zorin...) run:
 ```
-sudo apt-get install libxdo-dev libgtk-3-dev
+sudo apt-get install make cmake libxdo-dev libgtk-3-dev
 ```
 
 ## Installation
@@ -40,3 +40,4 @@ cd linuxtyper
 chmod +x ./install.sh
 ./install.sh
 ```
+This will build the project and create a shortcut in your applications overview.
