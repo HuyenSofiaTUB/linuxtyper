@@ -267,8 +267,12 @@ const gchar *gui =
 "  </object>"
 "</interface>";
 
+void idle() {
+
+}
+
 void func() {
-    clock_gettime(CLOCK_REALTIME, current_time);
+        clock_gettime(CLOCK_REALTIME, current_time);
     while ((current_time->tv_sec > (saved_time->tv_sec + intervall)) && (start_toggle != 0)) {
         if (xdo_get_pid_window(x, *window) == 0) {
             xdo_get_focused_window(x, window);
@@ -336,7 +340,7 @@ int main(int argc, char *argv[]) {
     size_t len = 0;
     int i = 0;
 
-    fptr = fopen("data.txt", "a+");
+    fptr = fopen("./.local/share/linuxtyper.txt", "a+");
     while ((getline(&line, &len, fptr)) != -1) {
         line[strlen(line) - 1] = '\0';
         gtk_entry_set_text(text[i], line);
@@ -359,6 +363,7 @@ int main(int argc, char *argv[]) {
     // Run our program
     gtk_widget_show_all(uiwindow);  // Show our window
     gtk_main();
+    gdk_threads_add_idle((GSourceFunc)idle, NULL);
 
     return 0;  // Necessary for a c main function
 }
@@ -366,7 +371,7 @@ int main(int argc, char *argv[]) {
 // Function to exit our app
 void exit_app() {
     printf("Exit app \n");  // Not neccesary
-    fptr = fopen("data.txt", "w");
+    fptr = fopen("./.local/share/linuxtyper.txt", "w");
     for (int i = 0; i < 5; i++) {
         fputs(gtk_entry_get_text(text[i]), fptr);
         fputs("\n", fptr);
@@ -386,7 +391,7 @@ void start_clicked() {
         gtk_widget_set_sensitive(GTK_WIDGET(uitime), FALSE);
         intervall = atoi(gtk_entry_get_text(uitime)) + 10 * !(atoi(gtk_entry_get_text(uitime)));
         clock_gettime(CLOCK_REALTIME, saved_time);
-        gdk_threads_add_idle((GSourceFunc)func, NULL);
+        // gdk_threads_add_idle((GSourceFunc)func, NULL);
     }
 }
 
