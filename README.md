@@ -37,6 +37,11 @@ mkdir -p ~/Downloads && cd ~/Downloads
 rm -rf ./linuxtyper
 git clone https://github.com/huyenngn/linuxtyper.git
 cd linuxtyper
+mkdir build
+cd build
+cmake ..
+make
+cd ..
 chmod +x ./install.sh
 ./install.sh
 ```
