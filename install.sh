@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# build
-mkdir build
-cd build
-cmake ..
-make
-
-# add to applications
 sudo mkdir /opt/linuxtyper
 sudo mkdir /usr/share/icons/linuxtyper
 sudo mv ../linuxtyper.desktop /usr/share/applications
